@@ -1,0 +1,122 @@
+[
+    {
+        "specialist_id": 1,
+        "name": "Dr. Jamshed Alam",
+        "expertise": "Endocrinologist",
+        "experience_years": 15,
+        "qualification": "MBBS, FCPS (Endocrinology), MRCP (UK)",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Endocrinology Department, 3rd Floor, Main Building, Aga Khan University Hospital",
+        "schedule": "Monday to Friday, 9:00 AM - 4:00 PM",
+        "contact_info": "endocrinology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 2,
+        "name": "Dr. Alim Hakim",
+        "expertise": "Nephrologist",
+        "experience_years": 12,
+        "qualification": "MBBS, MD (Nephrology), Fellow American Society of Nephrology",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Nephrology Unit, 2nd Floor, Specialty Clinics Building, Aga Khan University Hospital",
+        "schedule": "Monday, Wednesday, Friday, 10:00 AM - 3:00 PM",
+        "contact_info": "nephrology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 3,
+        "name": "Dr. Khadija Ali",
+        "expertise": "Ophthalmologist",
+        "experience_years": 10,
+        "qualification": "MBBS, FCPS (Ophthalmology), FRCS (Glasgow)",
+        "languages_spoken": ["English", "Urdu", "Sindhi"],
+        "gender": "Female",
+        "clinic_location": "Eye Care Center, 2nd Floor, Outpatient Building, Aga Khan University Hospital",
+        "schedule": "Monday to Saturday, 9:00 AM - 5:00 PM",
+        "contact_info": "ophthalmology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 4,
+        "name": "Dr. Salman Agha",
+        "expertise": "Dermatologist",
+        "experience_years": 12,
+        "qualification": "MBBS, FCPS (Dermatology), Diploma in Dermatopathology",
+        "languages_spoken": ["English", "Urdu", "Punjabi"],
+        "gender": "Male",
+        "clinic_location": "Dermatology Clinic, 3rd Floor, Ambulatory Care Center, Aga Khan University Hospital",
+        "schedule": "Monday to Friday, 9:00 AM - 3:00 PM",
+        "contact_info": "dermatology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 5,
+        "name": "Dr. Moiz Ahmed",
+        "expertise": "Podiatrist",
+        "experience_years": 14,
+        "qualification": "DPM, MS (Podiatric Medicine), Board Certified",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Podiatry Services, 1st Floor, Rehabilitation Center, Aga Khan University Hospital",
+        "schedule": "Monday to Wednesday, 9:00 AM - 2:00 PM",
+        "contact_info": "podiatry.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 6,
+        "name": "Dr. Ayesha Siddiqui",
+        "expertise": "General Physician",
+        "experience_years": 5,
+        "qualification": "MBBS, MCPS (Family Medicine)",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Female",
+        "clinic_location": "Family Medicine Clinic, Ground Floor, Primary Care Center, Aga Khan University Hospital",
+        "schedule": "Monday to Saturday, 8:00 AM - 2:00 PM",
+        "contact_info": "familymedicine.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 7,
+        "name": "Dr. Nadia Khan",
+        "expertise": "Neurologist",
+        "experience_years": 18,
+        "qualification": "MBBS, FCPS (Neurology), Fellowship in Neuromuscular Disorders",
+        "languages_spoken": ["English", "Urdu", "Sindhi"],
+        "gender": "Female",
+        "clinic_location": "Neurology Department, 4th Floor, Neurosciences Center, Aga Khan University Hospital",
+        "schedule": "Monday to Friday, 10:00 AM - 4:00 PM",
+        "contact_info": "neurology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 8,
+        "name": "Dr. Sameer Ali",
+        "expertise": "Dietitian",
+        "experience_years": 8,
+        "qualification": "MS (Clinical Nutrition), Registered Dietitian",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Nutrition Services, 5th Floor, Wellness Center, Aga Khan University Hospital",
+        "schedule": "Tuesday to Friday, 11:00 AM - 4:00 PM",
+        "contact_info": "nutrition.services@aku.edu"
+    },
+    {
+        "specialist_id": 9,
+        "name": "Dr. Ahmed Raza",
+        "expertise": "Cardiologist",
+        "experience_years": 20,
+        "qualification": "MBBS, MD (Cardiology), FACC",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Cardiology Clinic, 1st Floor, Heart and Vascular Institute, Aga Khan University Hospital",
+        "schedule": "Tuesday to Thursday, 9:00 AM - 5:00 PM",
+        "contact_info": "cardiology.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 10,
+        "name": "Dr. Sara Malik",
+        "expertise": "Psychiatrist",
+        "experience_years": 13,
+        "qualification": "MBBS, FCPS (Psychiatry), Fellowship in Neuropsychiatry",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Female",
+        "clinic_location": "Psychiatry and Behavioral Sciences, 2nd Floor, Mental Health Center, Aga Khan University Hospital",
+        "schedule": "Monday to Friday, 9:00 AM - 3:00 PM",
+        "contact_info": "psychiatry.clinic@aku.edu"
+    }
+]

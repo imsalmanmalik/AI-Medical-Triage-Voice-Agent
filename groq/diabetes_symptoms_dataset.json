@@ -1,0 +1,275 @@
+[
+    {
+        "symptom_id": 1,
+        "disease": "Diabetes",
+        "symptom": "Frequent urination (Polyuria)",
+        "severity": "Very Mild",
+        "description": "Excessive urination due to elevated blood glucose levels, leading to excess fluid in the kidneys.",
+        "suggested_remediation": "Maintain hydration, monitor blood glucose levels regularly, and consider consulting a general physician.",
+        "possible_questions": [
+            "How many times do you urinate in a day?",
+            "Has this increased recently?",
+            "Do you wake up at night to urinate?"
+        ]
+    },
+    {
+        "symptom_id": 2,
+        "disease": "Diabetes",
+        "symptom": "Increased thirst (Polydipsia)",
+        "severity": "Very Mild",
+        "description": "Feeling of excessive thirst due to dehydration caused by frequent urination.",
+        "suggested_remediation": "Increase water intake, avoid sugary drinks, and monitor blood glucose levels.",
+        "possible_questions": [
+            "Do you feel thirsty even after drinking water?",
+            "Is your mouth frequently dry?",
+            "How long have you been experiencing increased thirst?"
+        ]
+    },
+    {
+        "symptom_id": 3,
+        "disease": "Diabetes",
+        "symptom": "Persistent hunger (Polyphagia)",
+        "severity": "Mild",
+        "description": "Constant feeling of hunger as the body cannot properly utilize glucose.",
+        "suggested_remediation": "Eat balanced meals with complex carbohydrates, and consult a dietitian for meal planning.",
+        "possible_questions": [
+            "Do you feel hungry shortly after eating?",
+            "Have you noticed any weight changes?",
+            "What kind of foods are you craving?"
+        ]
+    },
+    {
+        "symptom_id": 4,
+        "disease": "Diabetes",
+        "symptom": "Unexplained weight loss",
+        "severity": "Moderate",
+        "description": "Loss of weight without changes in diet or exercise, indicating the body is using fat and muscle for energy.",
+        "suggested_remediation": "Consult an endocrinologist to evaluate your condition and discuss possible treatments.",
+        "possible_questions": [
+            "How much weight have you lost recently?",
+            "Are you intentionally trying to lose weight?",
+            "Over what time period did the weight loss occur?"
+        ]
+    },
+    {
+        "symptom_id": 5,
+        "disease": "Diabetes",
+        "symptom": "Fatigue",
+        "severity": "Mild",
+        "description": "Persistent tiredness due to the body's inability to convert glucose into energy effectively.",
+        "suggested_remediation": "Ensure adequate rest, maintain a balanced diet, and monitor blood glucose levels.",
+        "possible_questions": [
+            "Do you feel tired even after a full night's sleep?",
+            "Does fatigue affect your daily activities?",
+            "When did you start feeling this way?"
+        ]
+    },
+    {
+        "symptom_id": 6,
+        "disease": "Diabetes",
+        "symptom": "Blurred vision",
+        "severity": "Mild",
+        "description": "Blurriness in vision caused by changes in fluid levels affecting the eyes.",
+        "suggested_remediation": "Monitor blood glucose levels, rest your eyes, and schedule an eye examination with an ophthalmologist.",
+        "possible_questions": [
+            "Is the blurred vision constant or intermittent?",
+            "Have you had any recent eye examinations?",
+            "Do you experience eye discomfort or dryness?"
+        ]
+    },
+    {
+        "symptom_id": 7,
+        "disease": "Diabetes",
+        "symptom": "Slow-healing sores or cuts",
+        "severity": "Moderate",
+        "description": "Delayed healing due to poor circulation and high blood sugar affecting immune response.",
+        "suggested_remediation": "Keep the affected area clean, monitor for signs of infection, and consult a dermatologist or general physician.",
+        "possible_questions": [
+            "How long has the sore or cut been present?",
+            "Has it shown any signs of improvement?",
+            "Have you experienced this issue before?"
+        ]
+    },
+    {
+        "symptom_id": 8,
+        "disease": "Diabetes",
+        "symptom": "Tingling or numbness in hands or feet (Peripheral Neuropathy)",
+        "severity": "Moderate",
+        "description": "Nerve damage due to prolonged high blood sugar levels leading to loss of sensation.",
+        "suggested_remediation": "Consult a neurologist, maintain proper foot care, and manage blood glucose levels closely.",
+        "possible_questions": [
+            "Do you experience tingling, numbness, or burning sensations?",
+            "Is it constant or does it come and go?",
+            "Does it affect your balance or mobility?"
+        ]
+    },
+    {
+        "symptom_id": 9,
+        "disease": "Diabetes",
+        "symptom": "Dark patches on the skin (Acanthosis Nigricans)",
+        "severity": "Mild",
+        "description": "Darkened areas of skin, often in body folds, indicating insulin resistance.",
+        "suggested_remediation": "Maintain a healthy diet and exercise routine, and consult a dermatologist for evaluation.",
+        "possible_questions": [
+            "Where are the dark patches located?",
+            "When did you first notice them?",
+            "Do they itch or cause discomfort?"
+        ]
+    },
+    {
+        "symptom_id": 10,
+        "disease": "Diabetes",
+        "symptom": "Frequent infections",
+        "severity": "Moderate",
+        "description": "High blood sugar can weaken the immune system, making infections more common.",
+        "suggested_remediation": "Practice good hygiene, monitor blood glucose levels, and consult a physician.",
+        "possible_questions": [
+            "What type of infections have you been experiencing?",
+            "How often do they occur?",
+            "Have you noticed any patterns or triggers?"
+        ]
+    },
+    {
+        "symptom_id": 11,
+        "disease": "Diabetes",
+        "symptom": "Nausea and vomiting",
+        "severity": "Severe",
+        "description": "Possible signs of diabetic ketoacidosis, a serious complication due to lack of insulin.",
+        "suggested_remediation": "Seek immediate medical attention at the emergency department.",
+        "possible_questions": [
+            "How long have you been experiencing nausea and vomiting?",
+            "Are you also experiencing abdominal pain?",
+            "Have you checked your blood sugar levels recently?"
+        ]
+    },
+    {
+        "symptom_id": 12,
+        "disease": "Diabetes",
+        "symptom": "Shortness of breath",
+        "severity": "Severe",
+        "description": "May indicate diabetic ketoacidosis or other serious conditions.",
+        "suggested_remediation": "Seek immediate medical attention.",
+        "possible_questions": [
+            "When did the shortness of breath start?",
+            "Is it associated with physical activity?",
+            "Do you have any chest pain?"
+        ]
+    },
+    {
+        "symptom_id": 13,
+        "disease": "Diabetes",
+        "symptom": "Fruity-scented breath",
+        "severity": "Critical Severe",
+        "description": "Indicates high levels of ketones in the blood, a sign of diabetic ketoacidosis.",
+        "suggested_remediation": "Seek emergency medical care immediately.",
+        "possible_questions": [
+            "Have others noticed the scent on your breath?",
+            "Are you feeling confused or disoriented?",
+            "Do you have any other symptoms like abdominal pain?"
+        ]
+    },
+    {
+        "symptom_id": 14,
+        "disease": "Diabetes",
+        "symptom": "Confusion or difficulty concentrating",
+        "severity": "Severe",
+        "description": "May result from high or low blood sugar levels affecting brain function.",
+        "suggested_remediation": "Check blood glucose levels and consult a physician promptly.",
+        "possible_questions": [
+            "When did you start feeling confused?",
+            "Have you had any recent changes in medication?",
+            "Are you experiencing any other symptoms?"
+        ]
+    },
+    {
+        "symptom_id": 15,
+        "disease": "Diabetes",
+        "symptom": "Swelling in legs or feet (Edema)",
+        "severity": "Moderate",
+        "description": "Fluid retention due to circulation issues or kidney problems associated with diabetes.",
+        "suggested_remediation": "Elevate your legs when resting, reduce salt intake, and consult a nephrologist.",
+        "possible_questions": [
+            "Is the swelling worse at certain times of the day?",
+            "Do you have any pain associated with the swelling?",
+            "Have you experienced this before?"
+        ]
+    },
+    {
+        "symptom_id": 16,
+        "disease": "Diabetes",
+        "symptom": "Dry, itchy skin",
+        "severity": "Mild",
+        "description": "High blood sugar can cause dehydration, leading to dry skin.",
+        "suggested_remediation": "Use moisturizers, stay hydrated, and monitor blood glucose levels.",
+        "possible_questions": [
+            "Which areas of your skin are affected?",
+            "Does anything alleviate or worsen the itching?",
+            "Have you changed any skincare products recently?"
+        ]
+    },
+    {
+        "symptom_id": 17,
+        "disease": "Diabetes",
+        "symptom": "Erectile dysfunction",
+        "severity": "Moderate",
+        "description": "Nerve damage and poor blood flow can lead to sexual dysfunction in men.",
+        "suggested_remediation": "Consult an endocrinologist or urologist for evaluation and management.",
+        "possible_questions": [
+            "How long have you been experiencing these issues?",
+            "Have you discussed this with a doctor before?",
+            "Are you experiencing any other symptoms?"
+        ]
+    },
+    {
+        "symptom_id": 18,
+        "disease": "Diabetes",
+        "symptom": "Irregular menstrual cycles",
+        "severity": "Mild",
+        "description": "Hormonal imbalances due to diabetes can affect menstrual regularity.",
+        "suggested_remediation": "Maintain a healthy lifestyle and consult a gynecologist.",
+        "possible_questions": [
+            "How irregular are your cycles?",
+            "Have you noticed any other symptoms?",
+            "Are you currently on any medications?"
+        ]
+    },
+    {
+        "symptom_id": 19,
+        "disease": "Diabetes",
+        "symptom": "Gum disease (Periodontal disease)",
+        "severity": "Moderate",
+        "description": "High blood sugar can weaken the immune system, increasing susceptibility to infections like gum disease.",
+        "suggested_remediation": "Practice good oral hygiene and consult a dentist.",
+        "possible_questions": [
+            "Do your gums bleed when brushing or flossing?",
+            "Have you noticed bad breath?",
+            "When was your last dental check-up?"
+        ]
+    },
+    {
+        "symptom_id": 20,
+        "disease": "Diabetes",
+        "symptom": "Vision loss",
+        "severity": "Severe",
+        "description": "Potential sign of diabetic retinopathy, damage to the blood vessels in the retina.",
+        "suggested_remediation": "Seek immediate evaluation from an ophthalmologist.",
+        "possible_questions": [
+            "Is the vision loss sudden or gradual?",
+            "Does it affect one eye or both?",
+            "Are you experiencing any eye pain?"
+        ]
+    },
+    {
+        "symptom_id": 21,
+        "disease": "Diabetes",
+        "symptom": "High cholesterol levels",
+        "severity": "Mild",
+        "description": "Imbalance of lipid levels in the blood, increasing the risk of heart disease and stroke.",
+        "suggested_remediation": "Modify your diet to reduce saturated fats, increase physical activity, and consult a physician for a lipid profile test.",
+        "possible_questions": [
+            "Have you had your cholesterol levels checked recently?",
+            "Do you have a family history of high cholesterol?",
+            "Are you experiencing any chest discomfort or shortness of breath?"
+        ]
+    }
+]
