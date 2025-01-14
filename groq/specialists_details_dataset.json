@@ -118,5 +118,17 @@
         "clinic_location": "Psychiatry and Behavioral Sciences, 2nd Floor, Mental Health Center, Aga Khan University Hospital",
         "schedule": "Monday to Friday, 9:00 AM - 3:00 PM",
         "contact_info": "psychiatry.clinic@aku.edu"
+    },
+    {
+        "specialist_id": 11,
+        "name": "Dr. Ahmed Khan",
+        "expertise": "Pulmonologist",
+        "experience_years": 15,
+        "qualification": "MBBS, FCPS (Pulmonology), Fellowship in Critical Care Medicine",
+        "languages_spoken": ["English", "Urdu"],
+        "gender": "Male",
+        "clinic_location": "Pulmonology and Respiratory Care, 3rd Floor, Medical Center, Aga Khan University Hospital",
+        "schedule": "Monday to Saturday, 10:00 AM - 4:00 PM",
+        "contact_info": "pulmonology.clinic@aku.edu"
     }
 ]

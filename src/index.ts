@@ -113,10 +113,12 @@ class ConnectionManager {
 
   async getOpenAIResponse(text: string, callSid: string): Promise<string> {
     try {
-      const response = await axios.post(
-        `${misteralUrl}?user_input=${text}&call_sid=${callSid}`
-      );
-      return response.data.text;
+      const payload = { user_input: text, call_sid: callSid };
+
+      const response = await axios.post(misteralUrl, payload, {
+        headers: { "Content-Type": "application/json" },
+    });
+      return response.data.response;
     } catch (error) {
       console.error(
         "🚀 ~ ConnectionManager ~ getOpenAIResponse ~ error:",
@@ -276,6 +278,7 @@ app.post("/make_call", async (req: Request, res: Response) => {
 app.post("/process_response", async (req: Request, res: Response) => {
   const callSid = req.body.CallSid;
   const responseText = req.body.SpeechResult;
+  console.log('response text',responseText);
 
   if (!responseText) {
     console.log("No speech result received. Repeating previous AI response.");
@@ -284,11 +287,37 @@ app.post("/process_response", async (req: Request, res: Response) => {
 
   try {
     console.log("Processing your request...");
+
+    if (/bye/i.test(responseText)) {
+      console.log(`Detected 'bye' in responseText. Ending call with CallSid: ${callSid}`);
+      await manager.playResponse(callSid, 'Goodbye');
+      setTimeout( async () => {
+        await twilioClient.calls(callSid).update({ status: "completed" }); // Ends the call
+        manager.disconnect(callSid); // Clean up resources
+      } , 5000 );
+
+      return res.sendStatus(200);
+  }
+
     const aiResponse = await manager.getOpenAIResponse(responseText, callSid);
     console.log("AI Response:", aiResponse);
 
     if (aiResponse) {
       await manager.playResponse(callSid, aiResponse);
+      //await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      if (/bye/i.test(aiResponse)) {
+        console.log(aiResponse);
+        await manager.playResponse(callSid, 'Goodbye');
+        console.log(`Detected 'bye' in AIresponse. Ending call with CallSid: ${callSid}`);
+        setTimeout( async () => {
+          await twilioClient.calls(callSid).update({ status: "completed" }); // Ends the call
+          manager.disconnect(callSid); // Clean up resources
+        } , 5000 );  
+
+        return res.sendStatus(200);
+    }
+
       return res.sendStatus(200); // Delay the sendStatus to ensure playResponse completes
     }
     throw new Error("Failed to get AI response.");

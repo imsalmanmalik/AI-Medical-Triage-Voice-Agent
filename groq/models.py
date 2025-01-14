@@ -8,6 +8,15 @@ class FinalAns(BaseModel):
     booking_number: int
     department_of_doctor: str
     symptoms: List[str]
+    age: int
+
+class ChatRequest(BaseModel):
+    call_sid: str
+    user_input: str
+
+class HangupRequest(BaseModel):
+    callSid: str
+
 
 class ChatSession:
     def __init__(self, sid):
@@ -15,17 +24,14 @@ class ChatSession:
         self.messages = []
 
     def add_message(self, sender, message):
+        """Add a message to the session"""
         self.messages.append({"sender": sender, "message": message})
 
     def get_history(self):
+        """Get the conversation history"""
         return self.messages
 
     def reset_conversation(self):
+        """Reset the conversation history"""
         self.messages = []
 
-class ChatRequest(BaseModel):
-    callSID: str
-    user_input: str
-
-class HangupRequest(BaseModel):
-    callSid: str

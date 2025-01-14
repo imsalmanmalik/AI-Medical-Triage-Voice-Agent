@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv, find_dotenv
 import openai 
 import os
-from services import create_booking
+from services import create_booking,get_or_create_chat_session
 from models import FinalAns, ChatSession, ChatRequest, HangupRequest
 from threading import Lock
 from fuzzywuzzy import fuzz
@@ -37,7 +37,7 @@ You are a medical conversational assistant for Aga Khan Hospital's appointment b
 
 ### Tool Usage Guidelines:
 The following tools are available for your use:
-- Use the symptom_questions_tool if the users input describes a disease or symptom. Use this tool just as a symptom or disease ins mentioned by the user.
+- Use the symptom_questions_tool if the users input describes a disease or symptom. Use this tool just as a symptom or disease is mentioned by the user at the beginning of the conversation.
 - Use the database_query_generator tool to extract relevant information for patient booking.
 - Use the doctor_specialty_tool to generate a doctor specialty on the symptoms provided by the user.
 
@@ -52,7 +52,7 @@ The following tools are available for your use:
 
 Conversation Flow:
 1) Greet the user
-2) Gather their symptoms use the symptom_questions_tool and ask atleast 5 or 6 symptome reated questions
+2) Gather their symptoms use the symptom_questions_tool and ask at least 5 or 6 symptom related questions
 3) Generate a doctor specialty based on the symptoms using the doctor_specialty_tool
 4) Recommend a doctor based on the specialty generated
 5) Make appointment after conformation and use the database_query_generator tool to extract relevant information for patient booking.
@@ -60,20 +60,19 @@ Conversation Flow:
 
 REMEMBER NO STEPS in the CONVERSATION FLOW CAN BE LEFT OUT.
 
-### Phase Completion Rules (Updated):
+### Phase Completion Rules:
 1. **Symptom Gathering:**
-   - Once 5-6 questions are answered or sufficient details are gathered, stop asking any more questions.
-   - Us the symptom_questions_tool to extract symptoms from the user's input.
+   - Once 5-6 questions are answered or sufficient details are gathered, stop asking any more questions
+   - Then ask for the users name and their age.
    - Transition directly to recommending a doctor based on symptoms.
    - Do not revisit symptom-related questions after transitioning to the doctor recommendation phase.
-   - Ask the user's age
 
 2. **Doctor Specialty Recommendation:**
-   - Generate a doctor specialty based on the symptoms provided by the user. This is a very important step on the conversation.
+   - Generate a doctor specialty based on the symptoms provided by the user. This is a very important step in the conversation.
    - Next step is very crucial, Use the doctor_specialty_tool to extract the doctor's data based on the specialty generated in previous step.
    - Clearly recommend a doctor specialty based on the symptoms gathered.
    - Transition to the appointment confirmation phase once the user confirms they want to book the appointment.
-   - Do nit generate a doctors name or details on your own.
+   - Never generate a doctors name or details on your own.
 
 3. **Appointment Confirmation:**
    - Collect patient details step-by-step.
@@ -86,7 +85,7 @@ REMEMBER NO STEPS in the CONVERSATION FLOW CAN BE LEFT OUT.
 4. **Conversation Ending:**
    - This step is a MUST: Use the database_query_generator tool to extract relevant information for patient booking from the conversation. Do make sure to use this tool before ending the conversation and giving the user their appointment details. Do not include the field of this tool in the conversation but use this tool to extract out the relevant info.
    - After confirming the appointment, politely conclude the conversation with 'bye' and avoid introducing any new or previous topics.
-   - You can not ask about the user's symptoms in this phase
+   - You can not ask about the user's symptoms in this phase.
 
 ### Example Flow (Good Transition):
 **Assistant:** Hello! How can I assist you today?  
@@ -133,7 +132,7 @@ tools=[
                 "properties": {
                     "symptom": {
                         "type": "string",
-                        "description": "the symptom extracted from the user input."
+                        "description": "The symptom extracted from the user input."
                     }
                 },
                 "required": ["symptom"]
@@ -184,9 +183,17 @@ tools=[
                     "symptoms": {
                         "type": "array",
                         "description": "The list of symptoms the user has stated in the conversation."
+                    },
+                    "age":{
+                        "type": "integer",
+                        "description": "The age of the patient extracted from the conversation"
+                    },
+                    "call_sid":{
+                        "type": "string",
+                        "description": "The sid of the call"
                     }
                 },
-                "required": ["patient_name", "doctor_name", "booking_number", "department_of_doctor", "symptoms"]
+                "required": ["patient_name", "doctor_name", "booking_number", "department_of_doctor", "symptoms","age","call_sid"]
             },
         },
     }
@@ -220,7 +227,6 @@ def extract_final_answer(text_history):
     return final_answer
 
 
-
 def store_chat_history(call_sid: str, history: list):
     # Here we save the history as a JSON file. You can replace this with your DB logic.
     with open(f"{call_sid}_history.json", "w") as f:
@@ -242,6 +248,7 @@ def extract_final_data(conversation_history):
     - Booking number
     - Department of doctor
     - List of patient's symptoms
+    - Patient age
     If any of the information is not available, set its value to `null`.
     YOUR RESPONSE IS ONLY JSON. NOTHING FOLLOWING AND PRECEDING IT.
     Please return the response in the following JSON format **only** (without any additional text or Markdown formatting):
@@ -251,6 +258,7 @@ def extract_final_data(conversation_history):
         "booking_number": "integer or null",
         "department_of_doctor": "string or null",
         "symptoms": ["list of strings or null"]
+        "age": "integer or null"
     }}
     Conversation history:
     {conversation_history}
@@ -281,37 +289,37 @@ def extract_final_data(conversation_history):
     except Exception as e:
         raise ValueError(f"Extraction failed: {e}")
 
-# def get_final_ans():
-#     """
-#     Processes the final answer and creates booking.
+def get_final_ans():
+     """
+     Processes the final answer and creates booking.
     
 #     Returns:
 #         dict: Booking creation result
 #     """
-#     try:
-#         # Extract data using the new function
-#         extracted_data = extract_final_data(text_history)
+     try:
+         # Extract data using the new function
+         extracted_data = extract_final_data(text_history)
         
 #         # Validate and map the fields
-#         validated_data = {
-#             "patient_name": extracted_data.get("patient_name", None),
-#             "doctor_name": extracted_data.get("doctor_name", None),
-#             "booking_number": extracted_data.get("booking_number", None),
-#             "department_of_doctor": extracted_data.get("department_of_doctor", None),
-#             "symptoms": extracted_data.get("symptoms", None),
-#         }
+         validated_data = {
+             "patient_name": extracted_data.get("patient_name", None),
+             "doctor_name": extracted_data.get("doctor_name", None),
+             "booking_number": extracted_data.get("booking_number", None),
+             "department_of_doctor": extracted_data.get("department_of_doctor", None),
+             "symptoms": extracted_data.get("symptoms", None),
+         }
         
 #         # Create the final answer object
-#         final_ans = FinalAns(**validated_data)
+         final_ans = FinalAns(**validated_data)
         
 #         # Create the booking
-#         booking_id = create_booking(final_ans)
-#         return {"message": "Booking created successfully", "booking_id": booking_id}
+         booking_id = create_booking(final_ans)
+         return {"message": "Booking created successfully", "booking_id": booking_id}
         
-#     except ValueError as e:
-#         raise HTTPException(status_code=400, detail=str(e))
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
+     except ValueError as e:
+         raise HTTPException(status_code=400, detail=str(e))
+     except Exception as e:
+         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
 def get_possible_questions(input_symptom, symptoms_data=symptoms_data):
     # Extract symptoms from the JSON
@@ -333,7 +341,7 @@ def get_doctors_by_expertise(input_expertise, doctors_data=specialist_data):
     for doctor in doctors_data:
         if input_expertise.lower() in doctor['expertise'].lower():
             relevant_doctors.append(doctor)
-    
+            
     return relevant_doctors if relevant_doctors else None
 
 def get_db_connection():
@@ -362,45 +370,69 @@ def insert_patient_booking(symptom_array, doctor_id, patient_id, booking_no, dep
                 return result[0]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error inserting patient booking: {str(e)}")
+    
 
 def get_openai_response(input_conversation):
-    try:
-        response_text = client.chat.completions.create(
-        model = 'mistral-large-latest',
-        messages = input_conversation,
-        tools=tools,
-        tool_choice="auto"
-        )
-        # print(response_text.choices[0].message.content)
-        return response_text
-    except Exception as e:
-        return str(e)
+        try:
+            response_text = client.chat.completions.create(
+            model = 'mistral-large-latest',
+            messages = input_conversation,
+            tools=tools,
+            tool_choice="auto"
+            )
+            # print(response_text.choices[0].message.content)
+            return response_text
+        except Exception as e:
+            return str(e)
 
 class ReminderBot:
-    def __init__(self):
+    def __init__(self, system_prompt):
         # Initialize conversation with a system message
-        self.conversation = [{"role": "system", "content": system_prompt}]
-    def add_message(self, role, content):
-        # Adds message to the conversation.
-        self.conversation.append({"role": role, "content": content})
-    
-    def reset_conversation(self):
-        self.conversation = [{"role": "system", "content": system_prompt}]
-    
-    def generate_response(self, prompt):
-        self.add_message("user", prompt )
-        print ("User: ", prompt)
-        try:
-            response = get_openai_response(self.conversation)
-            print(response)
-            if (response.choices[0].finish_reason) == "tool_calls":
-                # print(json.loads(response.choices[0].message.tool_calls[0].function.arguments))
-                # self.reset_conversation()
-                return json.loads(response.choices[0].message.tool_calls[0].function.arguments)
-            self.add_message("assistant", response.choices[0].message.content)
-            print ("Assistant: ", response.choices[0].message.content)
-            return response
-        except Exception as e:
+        self.system_prompt = system_prompt
+        self.chat_sessions = {}  # Store chat sessions by sid
 
-            print('Error Generating Response! ', e)
+    def get_or_create_session(self, sid):
+        """Get the chat session for a given SID or create a new one"""
+        if sid not in self.chat_sessions:
+            self.chat_sessions[sid] = ChatSession(sid)
+        return self.chat_sessions[sid]
+
+    def add_message_to_session(self, sid, role, content):
+        """Add message to the session's conversation"""
+        session = self.get_or_create_session(sid)
+        session.add_message(role, content)
+
+    def reset_conversation(self, sid):
+        """Reset the session conversation"""
+        session = self.get_or_create_session(sid)
+        session.reset_conversation()
+
+    def generate_response(self, sid, prompt):
+        """Generate a response from the assistant, track conversation history"""
+        session = self.get_or_create_session(sid)
+
+        # Add user message to the session
+        self.add_message_to_session(sid, "user", prompt)
+
+        # Prepare the conversation for the API
+        conversation = [{"role": "system", "content": self.system_prompt}] + [{"role": msg['sender'], "content": msg['message']} for msg in session.get_history()]
+
+        try:
+            # Here, you should call your OpenAI API or similar service
+            response = get_openai_response(conversation)
+            print("Assistant Response:", response)
+            print("Type of Response:", type(response))
+
+            if response.choices[0].finish_reason == "tool_calls":
+                # Handle tool calls if needed
+                return json.loads(response.choices[0].message.tool_calls[0].function.arguments)
+            
+
+            assistant_message = response.choices[0].message.content if response.choices[0].message.content else "Sorry, I didn't understand that."
+            # Add assistant's message to the session history
+            self.add_message_to_session(sid, "assistant", assistant_message)
+
+            return assistant_message
+        except Exception as e:
+            print('Error Generating Response!', e)
             return str(e)

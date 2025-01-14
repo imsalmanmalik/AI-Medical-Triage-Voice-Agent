@@ -8,4 +8,3 @@ services:
       - "3001:3001"
     environment:
       - FASTAPI_APP=llm:app # Ensure your app file and object names are correct
-      

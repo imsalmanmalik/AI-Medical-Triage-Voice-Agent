@@ -4,3 +4,4 @@ openai==1.55.3
 uvicorn
 psycopg2-binary
 twilio
+fuzzywuzzy

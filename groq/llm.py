@@ -11,7 +11,7 @@ from service import *
 from services import *
 from models import *
 
-bot = ReminderBot()
+bot = ReminderBot(system_prompt)
 class UserInput(BaseModel):
     prompt: str
 
@@ -49,44 +49,91 @@ asked_questions = set()
 
 app = FastAPI()
 @app.post("/chat")
-def chat(user_input: UserInput):
+def chat(request: ChatRequest):
     try:
-        user_prompt = user_input.prompt
-        
-        response = bot.generate_response(user_prompt)
+        # Validate request
+        if not request.call_sid or not request.user_input:
+            raise HTTPException(status_code=400, detail="Missing call_sid or user_input")
 
-        if isinstance(response, dict) and 'symptom' in response:
-            questions = get_possible_questions(response['symptom'])
-            if questions:
-                bot.add_message("assistant", questions[0])
-                return {"response": questions[0]}
+        # Extract input and call session ID
+        user_input = request.user_input
+        call_sid = request.call_sid
+        print("User:", user_input)
 
-        if isinstance(response, dict) and 'specialty' in response:
-            print (response)
-            doctor_data = get_doctors_by_expertise(response['specialty'])
-            print (doctor_data)
+        # Get or create a chat session for the current call
+        chat_session = get_or_create_chat_session(call_sid)
+        chat_session.add_message("user", user_input)
 
-            message = "For your symptoms, I recommend Doctor " + doctor_data[0]['name'] + " who is a " + doctor_data[0]['expertise'] + ", Would you like to book an appointment?"
-            bot.add_message("assistant", message)
-            bot.add_message("assistant", str(doctor_data))
+        # Handle "bye" case directly
+        if "bye" in user_input.lower():
+            bot.add_message_to_session(call_sid, "assistant", "Goodbye!")
+            bot.reset_conversation(call_sid)
+            return {"response": "Goodbye!"}
+
+        # Generate response from the bot
+        response = bot.generate_response(call_sid, user_input)
+        print("Bot Response:", response)
+
+        # Handle symptom-related responses
+        if isinstance(response, dict) and "symptom" in response:
+            questions = get_possible_questions(response["symptom"])
+            print("Possible Questions:", questions)
+
+            if questions and isinstance(questions, list):
+                question = questions[0]
+                bot.add_message_to_session(call_sid, "assistant", question)
+                return {"response": question}
+
+            elif isinstance(questions, str):
+                response_message = "Ok, any other symptoms that you are facing?"
+                bot.add_message_to_session(call_sid, "assistant", response_message)
+                return {"response": response_message}
+
+        # Handle specialty-related responses
+        if isinstance(response, dict) and "specialty" in response:
+            doctor_data = get_doctors_by_expertise(response["specialty"])
+            print("Doctor Data:", doctor_data)
+
+            if not doctor_data:
+                no_doctor_message = (
+                    "Your symptoms look like a {response['specialty']} could help you out. "
+                    "I'm sorry, we don't have any doctors for this specialty. Bye."
+                )
+                bot.add_message_to_session(call_sid, "assistant", no_doctor_message)
+                return {"response": no_doctor_message}
+
+            message = (
+                f"For your symptoms, I recommend Doctor {doctor_data[0]['name']} who is a {doctor_data[0]['expertise']}. "
+                "Would you like to book an appointment?"
+            )
+            bot.add_message_to_session(call_sid, "assistant", message)
+            bot.add_message_to_session(call_sid, "assistant", str(doctor_data))
             return {"response": message}
 
-        if isinstance(response, dict) and 'patient_name' in response: 
+        # Handle patient name and booking-related responses
+        if (
+            isinstance(response, dict)
+            and "patient_name" in response
+            and "doctor_name" in response
+        ):
             final_ans = FinalAns(**response)
-            booking_id = process_patient_booking(final_ans)
-            if booking_id:
-                bot.add_message("assistant", f"Booking created successfully. Booking ID: {booking_id}")
-                return {"response": f"Booking created successfully. Booking ID: {booking_id}"}
+            booking_id = process_patient_booking(final_ans, call_sid)
 
-        # if 'bye' in response.choices[0].message.content.lower():
-        #     bot.add_message("assistant", "Goodbye!")
-        #     bot.reset_conversation()
-        #     return {"response": "Goodbye!"}
-        
-        return {"response": response.choices[0].message.content}
-    
+            if booking_id:
+                success_message = f"Booking created successfully. Booking ID: {booking_id}"
+                bot.add_message_to_session(call_sid, "assistant", success_message)
+                return {"response": success_message}
+
+        # General fallback response
+        return {"response": response}
+
     except Exception as e:
-        return {"response": f"An error occurred: {str(e)}"}
+        error_message = f"An error occurred: {str(e)}"
+        bot.add_message_to_session(call_sid, "assistant", error_message)
+        return {"response": error_message}
+
+
+
 
 async def hangup(request: HangupRequest):
     call_sid = request.callSid  # Get the callSID from the request

@@ -34,5 +34,6 @@ WORKDIR /app/groq
 # Expose ports for FastAPI and Node.js apps
 EXPOSE 4000 3001
 
+
 # Use concurrently to run both FastAPI and Node.js apps in the foreground
-CMD ["concurrently", "uvicorn llm:app --host 0.0.0.0 --port 8000", "node /app/dist/index.js"]
+CMD ["concurrently", "uvicorn llm:app --host 0.0.0.0 --port 4000", "node /app/dist/index.js"]
